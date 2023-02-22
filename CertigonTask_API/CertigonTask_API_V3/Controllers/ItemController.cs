@@ -29,8 +29,8 @@ namespace CertigonTask_API_V3.Controllers
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            /*if (!HttpContext.GetLoginInfo().isLogiran)
-                return Forbid();*/
+            if (!HttpContext.GetLoginInfo().isLogiran)
+                return Forbid();
 
             return Ok(_dbContext.Item.FirstOrDefault(i => i.ID == id)); ;
         }
