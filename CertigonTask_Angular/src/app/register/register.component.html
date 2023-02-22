@@ -1,0 +1,23 @@
+<form [formGroup]="form" (submit)="submit()">
+  <h1 class="h3 mb-3 fw-normal">Please register</h1>
+
+  <label>Username</label>
+  <input formControlName="username" id="username" class="form-control" placeholder="Name" required>
+    <div class="form-text text-danger" *ngIf="username.errors?.['required'] && (username.dirty || username.touched)">Username is required</div>
+    <div class="form-text text-danger" *ngIf="username.hasError('minlength') && (username.dirty || username.touched)">Username must be at least 4 characters</div>
+    <div class="form-text text-danger" *ngIf="username.errors?.['maxlength'] && (username.dirty || username.touched)">Username can be max 10 characters</div>
+
+
+  <label>Email</label>
+  <input formControlName="email" type="email" class="form-control" placeholder="Email" required>
+    <div class="form-text text-danger"  *ngIf="email.errors?.['required'] && (username.dirty || username.touched)">Email is required</div>
+    <div class="form-text text-danger"  *ngIf="email.errors?.['email'] && (username.dirty || username.touched)">Email must be a valid email address</div>
+
+  <label>Password</label>
+  <input formControlName="password" type="password" class="form-control" placeholder="Password" required>
+    <div class="form-text text-danger"  *ngIf="password.errors?.['required']">Password is required</div>
+    <div class="form-text text-danger"  *ngIf="password.errors?.['minlength']">Password must be at least 6 characters</div>
+    <div class="form-text text-danger"  *ngIf="password.errors?.['maxlength']">Password must be max 15 characters</div>
+
+  <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+</form>

@@ -1,0 +1,32 @@
+<div *ngIf="editItem!=null && editItem.show" class="modal fade show" id="exampleModalLive" tabindex="-1" aria-labelledby="exampleModalLiveLabel" aria-modal="true" role="dialog" style="display: block;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLiveLabel">Add/Edit item</h5>
+        <button type="button" class="btn-close" (click)="editItem.show = false" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Item Name</label>
+          <input class="form-control" [(ngModel)]="editItem.name"  placeholder="Item name">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <input class="form-control" [(ngModel)]="editItem.description"  placeholder="Item description">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Price</label>
+          <input class="form-control" [(ngModel)]="editItem.price"  placeholder="Item price">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Category</label>
+          <input class="form-control" [(ngModel)]="editItem.category"  placeholder="Item category">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="editItem.show = false" >Close</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

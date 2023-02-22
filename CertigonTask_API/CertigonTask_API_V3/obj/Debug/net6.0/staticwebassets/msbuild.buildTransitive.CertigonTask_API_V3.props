@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\CertigonTask_API_V3.props" />
+</Project>

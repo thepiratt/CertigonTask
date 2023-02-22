@@ -1,0 +1,32 @@
+<div class="modal fade show" id="exampleModalLive" tabindex="-1" aria-labelledby="exampleModalLiveLabel" aria-modal="true" role="dialog" style="display: block" *ngIf="editUser!=null && editUser.show">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLiveLabel">{{editUser.name}}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="editUser.show=false"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input class="form-control" type="text" placeholder="Username" [(ngModel)]="editUser.korisnickoIme"/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input class="form-control" type="text" placeholder="Email" [(ngModel)]="editUser.email"/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Manager</label>
+          <input class="form-control" type="checkbox" placeholder="Manager" [(ngModel)]="editUser.isManager"/>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Admin</label>
+          <input class="form-control" type="checkbox" placeholder="Admin" [(ngModel)]="editUser.isAdmin"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="editUser.show=false">Close</button>
+        <button type="button" class="btn btn-primary" (click)="saveChanges()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

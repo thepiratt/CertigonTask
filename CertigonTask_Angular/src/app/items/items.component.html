@@ -1,0 +1,32 @@
+<p>
+  Filter by name and category <input [(ngModel)]="name">
+</p>
+<table class="table table-warning">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Price</th>
+    <th>Category</th>
+    <th>Action</th>
+  </tr>
+  <tbody>
+  <tr *ngFor="let i of getItemsData()">
+    <td>{{i.id}}</td>
+    <td>{{i.name}}</td>
+    <td>{{i.description}}</td>
+    <td>{{i.price}}</td>
+    <td>{{i.category}}</td>
+    <td>
+      <button (click)="delete(i)" *ngIf="loginInfo().isPermissionManager || loginInfo().isPermsijaAdmin">Delete</button>
+      <button (click)="edit(i)" *ngIf="loginInfo().isPermissionManager || loginInfo().isPermsijaAdmin">Edit</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<button class="form-label" (click)="btnNew()">New item</button>
+
+
+
+<app-edit-item [editItem] = "selectedItem" ></app-edit-item>

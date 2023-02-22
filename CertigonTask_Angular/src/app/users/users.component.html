@@ -1,0 +1,28 @@
+<p>Filter by username and email <input [(ngModel)]="filter_username" /></p>
+<table class="table table-warning">
+  <tr>
+    <th>ID</th>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Created Time</th>
+    <th>Admin</th>
+    <th>Manager</th>
+    <th>Action</th>
+  </tr>
+  <tbody>
+  <tr *ngFor="let s of filter()">
+    <td>{{ s.id }}</td>
+    <td>{{ s.korisnickoIme }}</td>
+    <td>{{ s.email }}</td>
+    <td>{{ s.created_time.slice(0,10) }}</td>
+    <td>{{ s.isManager.toString() }}></td>
+    <td>{{ s.isAdmin.toString() }}></td>
+    <td>
+      <button (click)="deleteUser(s)">Obrisi</button>
+      <button (click)="editUser(s)">Uredi</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<app-edit-user [editUser] = "selectedUser"></app-edit-user>
+

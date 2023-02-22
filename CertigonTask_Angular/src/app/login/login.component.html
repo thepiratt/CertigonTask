@@ -1,0 +1,13 @@
+<form [formGroup]="form" (submit)="submit()">
+  <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+  <label>Username</label>
+  <input formControlName="username" type="text" class="form-control" placeholder="Username" required>
+
+  <label>Password</label>
+  <input formControlName="password" type="password" class="form-control" placeholder="Password" required>
+
+  <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+
+  <button class="w-100 btn btn-lg btn-secondary" (click)="btnRegister()">Register</button>
+</form>
