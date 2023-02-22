@@ -51,7 +51,16 @@ namespace CertigonTask_API_V3.Helpers.AuthenticationAuthorization
             {
                 return;//ok - ima pravo pristupa
             }
-           
+
+            if (filterContext.HttpContext.GetLoginInfo().isPermisijaAdmin)
+            {
+                return;//ok - ima pravo pristupa
+            }
+
+            if (filterContext.HttpContext.GetLoginInfo().isPermisijaManager)
+            {
+                return;//ok - ima pravo pristupa
+            }
 
             //else nema pravo pristupa
             filterContext.Result = new UnauthorizedResult();

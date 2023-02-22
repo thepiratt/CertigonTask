@@ -71,8 +71,8 @@ namespace CertigonTask_API_V3.Controllers
         [HttpPost("{id}")]
         public ActionResult Delete(int id)
         {
-            if (!HttpContext.GetLoginInfo().isLogiran)
-                return BadRequest("You are not logged in!");
+            if (!HttpContext.GetLoginInfo().isPermisijaManager)
+                return BadRequest("You are not manager!");
 
             Item item = _dbContext.Item.Find(id);
 

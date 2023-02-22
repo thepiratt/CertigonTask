@@ -24,9 +24,9 @@ namespace CertigonTask_API_V3.Helpers.AuthenticationAuthorization
             
             public bool isLogiran => korisnickiNalog != null;
 
-            /*public bool isAdmin = korisnickiNalog.isAdmin;
-            public bool isManager = korisnickiNalog.isManager;*/
-         
+            public bool isPermisijaAdmin => isLogiran && korisnickiNalog.isAdmin;
+
+            public bool isPermisijaManager => isLogiran && korisnickiNalog.isManager;
         }
 
 

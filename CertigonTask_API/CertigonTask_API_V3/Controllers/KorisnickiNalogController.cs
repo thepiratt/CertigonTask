@@ -8,6 +8,7 @@ using CertigonTask_API_V3.Helpers;
 using CertigonTask_API_V3.Helpers.AuthenticationAuthorization;
 using CertigonTask_API_V3.Models.Accounts;
 using CertigonTask_API_V3.Models.Items;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,8 +39,8 @@ namespace CertigonTask_API_V3.Controllers
         [HttpPost("{id}")]
         public ActionResult Update(int id, [FromBody] KorisnickiNalogUpdateVM x)
         {
-            if (!HttpContext.GetLoginInfo().isLogiran)
-                return BadRequest("Not logged in!");
+            if (!HttpContext.GetLoginInfo().isPermisijaAdmin)
+                return BadRequest("You are not Admin!");
 
             KorisnickiNalog user;
 
@@ -71,8 +72,8 @@ namespace CertigonTask_API_V3.Controllers
         [HttpPost("{id}")]
         public ActionResult Delete(int id)
         {
-            if (!HttpContext.GetLoginInfo().isLogiran)
-                return BadRequest("You are not logged in!");
+            if (!HttpContext.GetLoginInfo().isPermisijaAdmin)
+                return BadRequest("You are not Admin!");
 
             KorisnickiNalog user = _dbContext.KorisnickiNalog.Find(id);
 

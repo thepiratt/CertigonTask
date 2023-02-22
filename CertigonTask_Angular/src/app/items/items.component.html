@@ -15,7 +15,7 @@
     <td>{{i.id}}</td>
     <td>{{i.name}}</td>
     <td>{{i.description}}</td>
-    <td>{{i.price}}</td>
+    <td>{{i.price}} KM</td>
     <td>{{i.category}}</td>
     <td>
       <button (click)="delete(i)" *ngIf="loginInfo().isPermissionManager || loginInfo().isPermsijaAdmin">Delete</button>
