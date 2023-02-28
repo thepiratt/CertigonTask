@@ -10,15 +10,15 @@ namespace CertigonTask_API_V3.Entities
     public class LogKretanjePoSistemu
     {
         [Key]
-        public int id { get; set; }
-        [ForeignKey(nameof(korisnik))]
-        public string korisnikID { get; set; }
-        public KorisnickiNalog korisnik { get; set; }
+        public int Id { get; set; }
+        [ForeignKey(nameof(User))]
+        public string userAccountId { get; set; }
+        public UserAccount User { get; set; }
         public string queryPath { get; set; }
         public string postData { get; set; }
-        public DateTime vrijeme { get; set; }
-        public string ipAdresa { get; set; }
-        public string exceptionMessage { get; set; }
+        public DateTime Time { get; set; }
+        public string IpAdress { get; set; }
+        public string ExceptionMessage { get; set; }
         public bool isException { get; set; }
     }
 }

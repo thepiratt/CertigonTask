@@ -11,48 +11,48 @@ namespace CertigonTask_API_V3.Helpers.AuthenticationAuthorization
 {
     public static class MyAuthTokenExtension
     {
-        public class LoginInformacije
+        public class LoginInformation
         {
-            public LoginInformacije(AutentifikacijaToken autentifikacijaToken)
+            public LoginInformation(AuthenticationToken autentifikacijaToken)
             {
-                this.autentifikacijaToken = autentifikacijaToken;
+                this.authenticationToken = autentifikacijaToken;
             }
 
             [JsonIgnore]
-            public KorisnickiNalog korisnickiNalog => autentifikacijaToken?.korisnickiNalog;
-            public AutentifikacijaToken autentifikacijaToken { get; set; }
+            public UserAccount userAccount => authenticationToken?.UserAccount;
+            public AuthenticationToken authenticationToken { get; set; }
             
-            public bool isLogiran => korisnickiNalog != null;
+            public bool isLogiran => userAccount != null;
 
-            public bool isPermisijaAdmin => isLogiran && korisnickiNalog.isAdmin;
+            public bool isPermissionAdmin => isLogiran && userAccount.isAdmin;
 
-            public bool isPermisijaManager => isLogiran && korisnickiNalog.isManager;
+            public bool isPermissionManager => isLogiran && userAccount.isManager;
         }
 
 
-        public static LoginInformacije GetLoginInfo(this HttpContext httpContext)
+        public static LoginInformation GetLoginInfo(this HttpContext httpContext)
         {
             var token = httpContext.GetAuthToken();
 
-            return new LoginInformacije(token);
+            return new LoginInformation(token);
         }
     
-        public static AutentifikacijaToken GetAuthToken(this HttpContext httpContext)
+        public static AuthenticationToken GetAuthToken(this HttpContext httpContext)
         {
             string token = httpContext.GetMyAuthToken();
             ApplicationDbContext db = httpContext.RequestServices.GetService<ApplicationDbContext>();
 
-            AutentifikacijaToken korisnickiNalog = db.AutentifikacijaToken
-                .Include(s=>s.korisnickiNalog)
-                .SingleOrDefault(x => token != null && x.vrijednost == token);
+            AuthenticationToken authToken = db.AuthenticationToken
+                .Include(u=>u.UserAccount)
+                .SingleOrDefault(x => token != null && x.Value == token);
             
-            return korisnickiNalog;
+            return authToken;
         }
 
 
         public static string GetMyAuthToken(this HttpContext httpContext)
         {
-            string token = httpContext.Request.Headers["autentifikacija-token"];
+            string token = httpContext.Request.Headers["authentication-token"];
             return token;
         }
     }

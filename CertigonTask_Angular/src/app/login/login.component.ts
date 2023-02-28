@@ -27,11 +27,11 @@ export class LoginComponent implements OnInit {
     });
   }
   submit() {
-    let saljemo = {
-      korisnickoIme: this.form.value.username,
-      lozinka: this.form.value.password
+    let sending = {
+      UserName: this.form.value.username,
+      Password: this.form.value.password
     };
-    this.httpClient.post<LoginInformation>(MyConfig.adresa_servera + "/Autentifikacija/Login/", saljemo)
+    this.httpClient.post<LoginInformation>(MyConfig.adresa_servera + "/Authentication/Login/", sending)
       .subscribe((x: LoginInformation) => {
         if (x.isLogiran) {
           porukaSuccess("Login successful");

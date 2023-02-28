@@ -8,12 +8,8 @@ namespace CertigonTask_API_V3.Data
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Item> Item { get; set; }
-        /*public DbSet<PrijavaIspita> PrijavaIspita{ get; set; }*/
-        public DbSet<AutentifikacijaToken> AutentifikacijaToken{ get; set; }
-        public DbSet<KorisnickiNalog> KorisnickiNalog{ get; set; }
-        
-        /*public DbSet<AkademskaGodina> AkademskaGodina { get; set; }
-        public DbSet<UpisAkGodine> AkGodines { get; set; }*/
+        public DbSet<AuthenticationToken> AuthenticationToken{ get; set; }
+        public DbSet<UserAccount> UserAccount{ get; set; }
 
         public ApplicationDbContext(
             DbContextOptions options) : base(options)

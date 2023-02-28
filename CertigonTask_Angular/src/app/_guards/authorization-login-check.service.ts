@@ -4,7 +4,7 @@ import { AuthService} from "../_helpers/authService";
 
 
 @Injectable()
-export class AutorizacijaLoginProvjera implements CanActivate {
+export class AuthorizationLoginCheck implements CanActivate {
 
     constructor(private router: Router) { }
 

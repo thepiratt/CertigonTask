@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
     const val = this.form.value;
-    this.httpClient.post('http://localhost:5000/Autentifikacija/Register', val)
+    this.httpClient.post('http://localhost:5000/Authentication/Register', val)
       .subscribe((res: any) => {
             this.router.navigate(['/login']);
       });

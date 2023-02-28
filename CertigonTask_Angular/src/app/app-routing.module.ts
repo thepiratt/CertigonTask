@@ -3,22 +3,22 @@ import { RouterModule, Routes } from '@angular/router';
 import {HomeComponent} from "./home/home.component";
 import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
-import {AutorizacijaLoginProvjera} from "./_guards/authorization-login-check.service";
-import {AutorizacijaAdminProvjera} from "./_guards/authorization-admin-check.service";
+import {AuthorizationLoginCheck} from "./_guards/authorization-login-check.service";
+import {AuthorizationAdminCheck} from "./_guards/authorization-admin-check.service";
 import {ItemsComponent} from "./items/items.component";
 import {UsersComponent} from "./users/users.component";
 
 const routes: Routes = [
-  {path: 'items', component: ItemsComponent, canActivate: [AutorizacijaLoginProvjera]},
-  {path:'', component: HomeComponent, canActivate: [AutorizacijaLoginProvjera]},
+  {path: 'items', component: ItemsComponent, canActivate: [AuthorizationLoginCheck]},
+  {path:'', component: HomeComponent, canActivate: [AuthorizationLoginCheck]},
   {path:'register', component: RegisterComponent},
   {path:'login', component: LoginComponent},
-  {path:'users', component: UsersComponent, canActivate:[AutorizacijaAdminProvjera]},
+  {path:'users', component: UsersComponent, canActivate:[AuthorizationAdminCheck]},
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AutorizacijaLoginProvjera,AutorizacijaAdminProvjera]
+  providers: [AuthorizationLoginCheck,AuthorizationAdminCheck]
 })
 export class AppRoutingModule { }

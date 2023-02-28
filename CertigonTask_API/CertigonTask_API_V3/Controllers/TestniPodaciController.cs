@@ -29,7 +29,7 @@ namespace FIT_Api_Examples.Modul1_TestniPodaci.Controllers
         public ActionResult Count()
         {
             Dictionary<string, int> data = new Dictionary<string, int>();
-            data.Add("KorisnickiNalog", _dbContext.KorisnickiNalog.Count());
+            data.Add("UserAccount", _dbContext.UserAccount.Count());
             data.Add("Items", _dbContext.Item.Count());
 
             return Ok(data);
@@ -39,7 +39,7 @@ namespace FIT_Api_Examples.Modul1_TestniPodaci.Controllers
         public ActionResult Generate()
         {
             var items = new List<Item>();
-            var users = new List<KorisnickiNalog>();
+            var users = new List<UserAccount>();
 
             items.Add(new Item { Name = "Logitech G900", Description = "Najbolja mehanicka tastatura", Category = "Tastature", Price = 432.35m });
             items.Add(new Item { Name = "Logitech G733", Description = "Bezicki gaming headset", Category = "Slusalice", Price = 253.20m });
@@ -61,9 +61,9 @@ namespace FIT_Api_Examples.Modul1_TestniPodaci.Controllers
 
 
 
-            users.Add(new KorisnickiNalog { korisnickoIme = "harun", email = "harun1@gmail.com", PasswordHash = "Harun123.".HashPassword() });
-            users.Add(new KorisnickiNalog { korisnickoIme = "harunAdmin", email = "harun2@gmail.com", PasswordHash = "HarunAdmin123.".HashPassword(), isAdmin = true });
-            users.Add(new KorisnickiNalog { korisnickoIme = "harunManager", email = "harun3@gmail.com", PasswordHash = "HarunAdmin123.".HashPassword(), isManager = true });
+            users.Add(new UserAccount { UserName = "harun", Email = "harun1@gmail.com", PasswordHash = "Harun123.".HashPassword() });
+            users.Add(new UserAccount { UserName = "harunAdmin", Email = "harun2@gmail.com", PasswordHash = "HarunAdmin123.".HashPassword(), isAdmin = true });
+            users.Add(new UserAccount { UserName = "harunManager", Email = "harun3@gmail.com", PasswordHash = "HarunAdmin123.".HashPassword(), isManager = true });
 
 
             _dbContext.AddRange(items);

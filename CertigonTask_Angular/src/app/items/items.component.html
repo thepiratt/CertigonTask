@@ -18,8 +18,8 @@
     <td>{{i.price}} KM</td>
     <td>{{i.category}}</td>
     <td>
-      <button (click)="delete(i)" *ngIf="loginInfo().isPermissionManager || loginInfo().isPermsijaAdmin">Delete</button>
-      <button (click)="edit(i)" *ngIf="loginInfo().isPermissionManager || loginInfo().isPermsijaAdmin">Edit</button>
+      <button (click)="delete(i)" *ngIf="loginInfo().isPermissionManager || loginInfo().isPermissionAdmin">Delete</button>
+      <button (click)="edit(i)" *ngIf="loginInfo().isPermissionManager || loginInfo().isPermissionAdmin">Edit</button>
     </td>
   </tr>
   </tbody>

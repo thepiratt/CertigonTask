@@ -1,19 +1,19 @@
 import {HttpHeaders} from "@angular/common/http";
 import {AuthService} from "./_helpers/authService";
-import {AutentifikacijaToken} from "./_helpers/login-information";
+import {AuthenticationToken} from "./_helpers/login-information";
 
 export class MyConfig{
   static adresa_servera = "http://localhost:5000";
-  static http_opcije= function (){
+  static http_options= function (){
 
-    let autentifikacijaToken:AutentifikacijaToken = AuthService.getLoginInfo().autentifikacijaToken;
-    let mojtoken = "";
+    let authenticationToken:AuthenticationToken = AuthService.getLoginInfo().authenticationToken;
+    let mytoken = "";
 
-    if (autentifikacijaToken!=null)
-      mojtoken = autentifikacijaToken.vrijednost;
+    if (authenticationToken!=null)
+      mytoken = authenticationToken.value;
     return {
         headers: {
-        'autentifikacija-token': mojtoken,
+        'authentication-token': mytoken,
       }
     };
   }

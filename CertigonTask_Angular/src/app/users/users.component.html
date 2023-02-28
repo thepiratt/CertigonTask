@@ -5,21 +5,21 @@
     <th>Username</th>
     <th>Email</th>
     <th>Created Time</th>
-    <th>Admin</th>
     <th>Manager</th>
+    <th>Admin</th>
     <th>Action</th>
   </tr>
   <tbody>
-  <tr *ngFor="let s of filter()">
-    <td>{{ s.id }}</td>
-    <td>{{ s.korisnickoIme }}</td>
-    <td>{{ s.email }}</td>
-    <td>{{ s.created_time.slice(0,10) }}</td>
-    <td>{{ s.isManager.toString() }}</td>
-    <td>{{ s.isAdmin.toString() }}</td>
+  <tr *ngFor="let u of filter()">
+    <td>{{ u.id }}</td>
+    <td>{{ u.userName }}</td>
+    <td>{{ u.email }}</td>
+    <td>{{ u.created_time.slice(0,10) }}</td>
+    <td>{{ u.isManager.toString() }}</td>
+    <td>{{ u.isAdmin.toString() }}</td>
     <td>
-      <button (click)="deleteUser(s)">Obrisi</button>
-      <button (click)="editUser(s)">Uredi</button>
+      <button (click)="deleteUser(u)">Delete</button>
+      <button (click)="editUser(u)">Edit</button>
     </td>
   </tr>
   </tbody>

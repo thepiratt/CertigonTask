@@ -22,42 +22,42 @@ namespace CertigonTask_API_V3.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("CertigonTask_API_V3.Entities.AutentifikacijaToken", b =>
+            modelBuilder.Entity("CertigonTask_API_V3.Entities.AuthenticationToken", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("KorisnickiNalogId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ipAdresa")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("vrijednost")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("vrijemeEvidentiranja")
+                    b.Property<DateTime>("Created_Time")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("id");
+                    b.Property<string>("IpAdress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("KorisnickiNalogId");
+                    b.Property<int>("UserAccountId")
+                        .HasColumnType("int");
 
-                    b.ToTable("AutentifikacijaToken");
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserAccountId");
+
+                    b.ToTable("AuthenticationToken");
                 });
 
             modelBuilder.Entity("CertigonTask_API_V3.Entities.Item", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -77,27 +77,31 @@ namespace CertigonTask_API_V3.Migrations
                     b.Property<DateTime>("created_time")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Item");
                 });
 
-            modelBuilder.Entity("CertigonTask_API_V3.Entities.KorisnickiNalog", b =>
+            modelBuilder.Entity("CertigonTask_API_V3.Entities.UserAccount", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created_time")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("created_time")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("email")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -107,24 +111,20 @@ namespace CertigonTask_API_V3.Migrations
                     b.Property<bool>("isManager")
                         .HasColumnType("bit");
 
-                    b.Property<string>("korisnickoIme")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
 
-                    b.HasKey("id");
-
-                    b.ToTable("KorisnickiNalog");
+                    b.ToTable("UserAccount");
                 });
 
-            modelBuilder.Entity("CertigonTask_API_V3.Entities.AutentifikacijaToken", b =>
+            modelBuilder.Entity("CertigonTask_API_V3.Entities.AuthenticationToken", b =>
                 {
-                    b.HasOne("CertigonTask_API_V3.Entities.KorisnickiNalog", "korisnickiNalog")
+                    b.HasOne("CertigonTask_API_V3.Entities.UserAccount", "UserAccount")
                         .WithMany()
-                        .HasForeignKey("KorisnickiNalogId")
+                        .HasForeignKey("UserAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("korisnickiNalog");
+                    b.Navigation("UserAccount");
                 });
 #pragma warning restore 612, 618
         }

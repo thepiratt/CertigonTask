@@ -15,7 +15,7 @@ namespace CertigonTask_API_V3.Helpers.AuthenticationAuthorization
     {
         public static int Save(HttpContext httpContext, IExceptionHandlerPathFeature exceptionMessage = null)
         {
-            KorisnickiNalog korisnik = httpContext.GetLoginInfo().korisnickiNalog;
+            UserAccount korisnik = httpContext.GetLoginInfo().userAccount;
 
             var request = httpContext.Request;
 
@@ -36,17 +36,17 @@ namespace CertigonTask_API_V3.Helpers.AuthenticationAuthorization
 
             var x = new LogKretanjePoSistemu
             {
-                korisnik = korisnik,
-                vrijeme = DateTime.Now,
+                User = korisnik,
+                Time = DateTime.Now,
                 queryPath = request.GetEncodedPathAndQuery(),
                 postData = detalji,
-                ipAdresa = request.HttpContext.Connection.RemoteIpAddress?.ToString(),
+                IpAdress = request.HttpContext.Connection.RemoteIpAddress?.ToString(),
             };
 
             if (exceptionMessage != null)
             {
                 x.isException = true;
-                x.exceptionMessage = exceptionMessage.Error.Message + " |" + exceptionMessage.Error.InnerException;
+                x.ExceptionMessage = exceptionMessage.Error.Message + " |" + exceptionMessage.Error.InnerException;
             }
 
             ApplicationDbContext db = httpContext.RequestServices.GetService<ApplicationDbContext>();
@@ -54,7 +54,7 @@ namespace CertigonTask_API_V3.Helpers.AuthenticationAuthorization
             db.Add(x);
             db.SaveChanges();
 
-            return x.id;
+            return x.Id;
         }
 
 

@@ -4,15 +4,14 @@ import { AuthService} from "../_helpers/authService";
 
 
 @Injectable()
-export class AutorizacijaAdminProvjera implements CanActivate {
+export class AuthorizationAdminCheck implements CanActivate {
 
     constructor(private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
         try {
-          //nedovrseno privremeno rjesenje
-          if (AuthService.getLoginInfo().isPermsijaAdmin)
+          if (AuthService.getLoginInfo().isPermissionAdmin)
             return true;
         }catch (e) {
         }

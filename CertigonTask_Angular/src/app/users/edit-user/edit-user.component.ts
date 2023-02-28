@@ -21,7 +21,7 @@ export class EditUserComponent implements OnInit {
   }
 
   saveChanges(){
-    this.httpClient.post(MyConfig.adresa_servera + "/KorisnickiNalog/Update/" + this.editUser.id, this.editUser, MyConfig.http_opcije())
+    this.httpClient.post(MyConfig.adresa_servera + "/UserAccount/Update/" + this.editUser.id, this.editUser, MyConfig.http_options())
       .subscribe((res:any) => {
         porukaSuccess(`User updated successfully`);
         this.editUser.show=false;

@@ -20,7 +20,7 @@ export class UsersComponent implements OnInit {
   constructor(private httpClient: HttpClient, private router: Router) { }
 
   getData(): void {
-    this.httpClient.get(MyConfig.adresa_servera + '/KorisnickiNalog/GetAll', MyConfig.http_opcije()).subscribe((x: any) => {
+    this.httpClient.get(MyConfig.adresa_servera + '/UserAccount/GetAll', MyConfig.http_options()).subscribe((x: any) => {
         this.usersData = x;
       });
   }
@@ -32,11 +32,11 @@ export class UsersComponent implements OnInit {
   filter() {
     if (this.usersData == null)
       return [];
-    return this.usersData.filter((x: any)=> x.korisnickoIme.length==0 || (x.korisnickoIme + " " + x.email).toLowerCase().startsWith(this.filter_username.toLowerCase()) || (x.email + " " + x.korisnickoIme).toLowerCase().startsWith(this.filter_username.toLowerCase()));
+    return this.usersData.filter((x: any)=> x.userName.length==0 || (x.userName + " " + x.email).toLowerCase().startsWith(this.filter_username.toLowerCase()) || (x.email + " " + x.userName).toLowerCase().startsWith(this.filter_username.toLowerCase()));
   }
 
   deleteUser(user: any) {
-    this.httpClient.post(MyConfig.adresa_servera + "/User/Delete/" + user.id, null, MyConfig.http_opcije())
+    this.httpClient.post(MyConfig.adresa_servera + "/UserAccount/Delete/" + user.id, null, MyConfig.http_options())
       .subscribe((res: any) => {
         let index = this.usersData.indexOf(user);
         if (index > -1) {

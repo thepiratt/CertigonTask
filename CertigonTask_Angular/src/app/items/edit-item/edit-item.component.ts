@@ -19,7 +19,7 @@ export class EditItemComponent implements OnInit {
   }
 
   save() {
-    this.httpClient.post(MyConfig.adresa_servera+ "/Item/Update/" + this.editItem.id, this.editItem, MyConfig.http_opcije()).subscribe((x:any) =>{
+    this.httpClient.post(MyConfig.adresa_servera+ "/Item/Update/" + this.editItem.id, this.editItem, MyConfig.http_options()).subscribe((x:any) =>{
       porukaSuccess("Ok..." + x);
       this.editItem.show = false;
     });

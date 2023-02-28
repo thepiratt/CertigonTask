@@ -6,22 +6,22 @@ export class AuthService {
   {
     if (x==null)
       x = new LoginInformation();
-    localStorage.setItem("autentifikacija-token", JSON.stringify(x));
+    localStorage.setItem("authentication-token", JSON.stringify(x));
   }
 
   static getLoginInfo():LoginInformation
   {
-      let x = localStorage.getItem("autentifikacija-token");
+      let x = localStorage.getItem("authentication-token");
       if (x==="")
         return new LoginInformation();
 
       try {
-        let loginInformacije:LoginInformation = JSON.parse(x);
-        loginInformacije.isPermsijaAdmin = loginInformacije.autentifikacijaToken.korisnickiNalog.isAdmin;
-        loginInformacije.isPermissionManager = loginInformacije.autentifikacijaToken.korisnickiNalog.isManager;
-        if (loginInformacije==null)
+        let loginInformation:LoginInformation = JSON.parse(x);
+        loginInformation.isPermissionAdmin = loginInformation.authenticationToken.userAccount.isAdmin;
+        loginInformation.isPermissionManager = loginInformation.authenticationToken.userAccount.isManager;
+        if (loginInformation==null)
           return new LoginInformation();
-        return loginInformacije;
+        return loginInformation;
       }
       catch (e)
       {

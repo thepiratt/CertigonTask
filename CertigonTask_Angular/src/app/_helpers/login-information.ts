@@ -1,24 +1,24 @@
 
 
 export class LoginInformation {
-  autentifikacijaToken:        AutentifikacijaToken=null;
+  authenticationToken:        AuthenticationToken=null;
   isLogiran:                   boolean=false;
   isPermissionManager:         boolean=false;
-  isPermsijaAdmin:             boolean=false;
+  isPermissionAdmin:             boolean=false;
 }
 
-export interface AutentifikacijaToken {
+export interface AuthenticationToken {
   id:                   number;
-  vrijednost:           string;
-  korisnickiNalogId:    number;
-  korisnickiNalog:      KorisnickiNalog;
-  vrijemeEvidentiranja: Date;
-  ipAdresa:             string;
+  value:           string;
+  userAccountId:    number;
+  userAccount:      UserAccount;
+  created_time: Date;
+  ipAdress:             string;
 }
 
-export interface KorisnickiNalog {
+export interface UserAccount {
   id:                 number;
-  korisnickoIme:      string;
+  userName:      string;
   email:              string;
   isAdmin:            boolean;
   isManager:          boolean;

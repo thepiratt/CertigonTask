@@ -32,7 +32,7 @@ namespace CertigonTask_API_V3.Controllers
             if (!HttpContext.GetLoginInfo().isLogiran)
                 return Forbid();
 
-            return Ok(_dbContext.Item.FirstOrDefault(i => i.ID == id)); ;
+            return Ok(_dbContext.Item.FirstOrDefault(i => i.Id == id)); ;
         }
 
         [HttpPost("{id}")]
@@ -53,25 +53,25 @@ namespace CertigonTask_API_V3.Controllers
             }
             else
             {
-                item = _dbContext.Item.FirstOrDefault(i => i.ID == id);
+                item = _dbContext.Item.FirstOrDefault(i => i.Id == id);
                 if (item == null)
                     return BadRequest("Unknown ID");
             }
 
-            item.Name = x.name.RemoveTags();
-            item.Description = x.description.RemoveTags();
-            item.Price = x.price;
-            item.Category = x.category;
+            item.Name = x.Name.RemoveTags();
+            item.Description = x.Description.RemoveTags();
+            item.Price = x.Price;
+            item.Category = x.Category;
             
 
             _dbContext.SaveChanges();
-            return Get(item.ID);
+            return Get(item.Id);
         }
 
         [HttpPost("{id}")]
         public ActionResult Delete(int id)
         {
-            if (!HttpContext.GetLoginInfo().isPermisijaManager)
+            if (!HttpContext.GetLoginInfo().isPermissionManager)
                 return BadRequest("You are not manager!");
 
             Item item = _dbContext.Item.Find(id);
@@ -93,7 +93,7 @@ namespace CertigonTask_API_V3.Controllers
 
             var data = _dbContext.Item
                 .Where(x => category == null || x.Category.StartsWith(category))
-                .OrderByDescending(i => i.ID)
+                .OrderByDescending(i => i.Id)
                 .AsQueryable();
 
 

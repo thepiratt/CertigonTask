@@ -23,7 +23,7 @@ export class NavComponent implements OnInit {
   logoutButton() {
     AuthService.setLoginInfo(null);
 
-      this.httpKlijent.post(MyConfig.adresa_servera + "/Autentifikacija/Logout/", null, MyConfig.http_opcije())
+      this.httpKlijent.post(MyConfig.adresa_servera + "/Authentication/Logout/", null, MyConfig.http_options())
       .subscribe((x: any) => {
         this.router.navigateByUrl("/login");
         porukaSuccess("Logout successful");

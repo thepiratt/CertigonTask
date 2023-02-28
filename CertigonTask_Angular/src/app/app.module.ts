@@ -11,8 +11,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import { ItemsComponent } from './items/items.component';
 import { EditItemComponent } from './items/edit-item/edit-item.component';
-import {AutorizacijaLoginProvjera} from "./_guards/authorization-login-check.service";
-import {AutorizacijaAdminProvjera} from "./_guards/authorization-admin-check.service";
+import {AuthorizationLoginCheck} from "./_guards/authorization-login-check.service";
+import {AuthorizationAdminCheck} from "./_guards/authorization-admin-check.service";
 import { UsersComponent } from './users/users.component';
 import { EditUserComponent } from './users/edit-user/edit-user.component';
 
@@ -36,8 +36,8 @@ import { EditUserComponent } from './users/edit-user/edit-user.component';
     HttpClientModule,
   ],
   providers: [
-    AutorizacijaLoginProvjera,
-    AutorizacijaAdminProvjera
+    AuthorizationLoginCheck,
+    AuthorizationAdminCheck
   ],
   bootstrap: [AppComponent]
 })

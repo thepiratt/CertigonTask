@@ -23,7 +23,7 @@ export class ItemsComponent implements OnInit {
 
   testirajWebApi() :void
   {
-    this.httpKlijent.get(MyConfig.adresa_servera+ "/Item/GetAll2", MyConfig.http_opcije()).subscribe(x=>{
+    this.httpKlijent.get(MyConfig.adresa_servera+ "/Item/GetAll2", MyConfig.http_options()).subscribe(x=>{
       this.itemsData = x;
     });
   }
@@ -57,7 +57,7 @@ export class ItemsComponent implements OnInit {
   }
 
   delete(s:any) {
-    this.httpKlijent.post(MyConfig.adresa_servera+ "/Item/Delete/" + s.id,null, MyConfig.http_opcije())
+    this.httpKlijent.post(MyConfig.adresa_servera+ "/Item/Delete/" + s.id,null, MyConfig.http_options())
       .subscribe((povratnaVrijednost:any) =>{
         const index = this.itemsData.indexOf(s);
         if (index > -1) {

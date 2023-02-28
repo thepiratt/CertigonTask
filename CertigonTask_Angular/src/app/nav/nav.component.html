@@ -13,13 +13,13 @@
         <li *ngIf="loginInfo().isLogiran" class="nav-item">
           <a class="nav-link" routerLink="/items">Items</a>
         </li>
-        <li *ngIf="loginInfo().isPermsijaAdmin" class="nav-item">
+        <li *ngIf="loginInfo().isPermissionAdmin" class="nav-item">
           <a class="nav-link" routerLink="/users">Users</a>
         </li>
 
         <li class="nav-item dropdown" >
           <a class="nav-link dropdown-toggle" href="#" id="navbarLogiraniKorisnikLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{loginInfo().autentifikacijaToken.korisnickiNalog.korisnickoIme}}
+            {{loginInfo().authenticationToken.userAccount.userName}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarLogiraniKorisnikLink">
             <li><a class="dropdown-item" routerLink="/profile/edit">Edit profile</a></li>
