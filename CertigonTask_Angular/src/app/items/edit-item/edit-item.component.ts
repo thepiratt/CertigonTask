@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {MyConfig} from "../../my-config";
 
 declare function porukaSuccess(s:string):any;
+declare function porukaError(s:string):any;
 
 @Component({
   selector: 'app-edit-item',
@@ -22,7 +23,10 @@ export class EditItemComponent implements OnInit {
     this.httpClient.post(MyConfig.adresa_servera+ "/Item/Update/" + this.editItem.id, this.editItem, MyConfig.http_options()).subscribe((x:any) =>{
       porukaSuccess("Ok..." + x);
       this.editItem.show = false;
-    });
+    },
+      (error => {
+        porukaError(""+error.error);
+      }));
   }
 
 }

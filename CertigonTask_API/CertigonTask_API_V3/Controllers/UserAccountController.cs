@@ -8,6 +8,7 @@ using CertigonTask_API_V3.Helpers;
 using CertigonTask_API_V3.Helpers.AuthenticationAuthorization;
 using CertigonTask_API_V3.Models.Accounts;
 using CertigonTask_API_V3.Models.Items;
+using CertigonTask_API_V3.Services.UserAccountService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,81 +20,63 @@ namespace CertigonTask_API_V3.Controllers
     [Route("[controller]/[action]")]
     public class UserAccountController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IUserAccountService _userAccountService;
 
-        public UserAccountController(ApplicationDbContext dbContext)
+        public UserAccountController(IUserAccountService userAccountService)
         {
-            this._dbContext = dbContext;
+            this._userAccountService = userAccountService;
         }
 
 
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
             if (!HttpContext.GetLoginInfo().isLogiran)
                 return Forbid();
 
-            return Ok(_dbContext.UserAccount.FirstOrDefault(i => i.Id == id)); ;
+            var result = await _userAccountService.GetSingleUser(id);
+            if (result is null)
+                return NotFound("User is not found");
+
+            return Ok(result);
         }
 
         [HttpPost("{id}")]
-        public ActionResult Update(int id, [FromBody] UserAccountUpdateVM x)
+        public async Task<ActionResult> Update(int id, [FromBody] UserAccountUpdateVM request)
         {
             if (!HttpContext.GetLoginInfo().isPermissionAdmin)
                 return BadRequest("You are not Admin!");
 
-            UserAccount user;
+            var result = await _userAccountService.UpdateUser(id, request);
+            if (result is null)
+                return NotFound("User not found!");
 
-            if (id == 0)
-            {
-                user = new UserAccount
-                {
-                    Created_time = DateTime.Now
-                };
-                _dbContext.Add(user);
-            }
-            else
-            {
-                user = _dbContext.UserAccount.FirstOrDefault(i => i.Id == id);
-                if (user == null)
-                    return BadRequest("Unknown ID");
-            }
-
-            user.UserName = x.UserName.RemoveTags();
-            user.Email = x.Email.RemoveTags();
-            user.isManager = x.isManager;
-            user.isAdmin = x.isAdmin;
-            
-
-            _dbContext.SaveChanges();
-            return Get(user.Id);
+            return Ok(result);
         }
 
         [HttpPost("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             if (!HttpContext.GetLoginInfo().isPermissionAdmin)
                 return BadRequest("You are not Admin!");
 
-            UserAccount user = _dbContext.UserAccount.Find(id);
+            var result = await _userAccountService.DeleteUser(id);
+            if (result is null)
+                return NotFound("Item not found!");
 
-            if (user == null || id == 1)
-                return BadRequest("Incorrect ID");
-
-            _dbContext.Remove(user);
-            _dbContext.SaveChanges();
-
-            return Ok();
+            return Ok(id);
         }
 
         [HttpGet]
-        public ActionResult GetAll()
+        public async Task<ActionResult<List<UserAccount>>> GetAll()
         {
-            if (!HttpContext.GetLoginInfo().isLogiran)
-                return BadRequest("You are not logged in!");
+            if (!HttpContext.GetLoginInfo().isPermissionAdmin)
+                return BadRequest("You are not Admin!");
 
-            var data = _dbContext.UserAccount.ToList().AsQueryable();
-            return Ok(data.Take(100).ToList());
+            /*var data = _dbContext.UserAccount.ToList().AsQueryable();
+            return Ok(data.Take(100).ToList());*/
+
+            return await _userAccountService.GetAllUsers();
         }
 
 

@@ -42,7 +42,10 @@ export class LoginComponent implements OnInit {
           AuthService.setLoginInfo(null)
           porukaError("Unsuccessful login");
         }
-      });
+      },
+        (error => {
+        porukaError(""+error.error);
+      }));
   }
 
 

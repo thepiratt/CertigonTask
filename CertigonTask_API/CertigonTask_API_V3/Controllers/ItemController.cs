@@ -8,6 +8,7 @@ using CertigonTask_API_V3.Helpers;
 using CertigonTask_API_V3.Helpers.AuthenticationAuthorization;
 using CertigonTask_API_V3.Models.Accounts;
 using CertigonTask_API_V3.Models.Items;
+using CertigonTask_API_V3.Services.ItemService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,97 +19,60 @@ namespace CertigonTask_API_V3.Controllers
     [Route("[controller]/[action]")]
     public class ItemController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IItemService _itemService;
 
-        public ItemController(ApplicationDbContext dbContext)
+        public ItemController(IItemService itemService)
         {
-            this._dbContext = dbContext;
+            this._itemService = itemService;
         }
 
 
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public async Task<ActionResult<Item>> Get(int id)
         {
             if (!HttpContext.GetLoginInfo().isLogiran)
                 return Forbid();
 
-            return Ok(_dbContext.Item.FirstOrDefault(i => i.Id == id)); ;
+            /*return Ok(_dbContext.Item.FirstOrDefault(i => i.Id == id)); ;*/
+            var result = await _itemService.GetSingleItem(id);
+            if(result is null)
+                return NotFound("Item is not found");
+            return Ok(result);
         }
 
         [HttpPost("{id}")]
-        public ActionResult Update(int id, [FromBody] ItemUpdateVM x)
+        public async Task<ActionResult<List<Item>>> Update(int id, [FromBody] ItemUpdateVM request)
         {
             if (!HttpContext.GetLoginInfo().isLogiran)
                 return BadRequest("Not logged in!");
 
-            Item item;
+           var result = await _itemService.UpdateItem(id, request);
+            if (result is null)
+                return NotFound("Item not found!");
 
-            if (id == 0)
-            {
-                item = new Item
-                {
-                    created_time = DateTime.Now
-                };
-                _dbContext.Add(item);
-            }
-            else
-            {
-                item = _dbContext.Item.FirstOrDefault(i => i.Id == id);
-                if (item == null)
-                    return BadRequest("Unknown ID");
-            }
-
-            item.Name = x.Name.RemoveTags();
-            item.Description = x.Description.RemoveTags();
-            item.Price = x.Price;
-            item.Category = x.Category;
-            
-
-            _dbContext.SaveChanges();
-            return Get(item.Id);
+            return Ok(result);
         }
 
         [HttpPost("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             if (!HttpContext.GetLoginInfo().isPermissionManager)
                 return BadRequest("You are not manager!");
 
-            Item item = _dbContext.Item.Find(id);
+            var result = await _itemService.DeleteItem(id);
+            if (result is null)
+                return NotFound("Item not found!");
 
-            if (item == null || id == 1)
-                return BadRequest("Incorrect ID");
-
-            _dbContext.Remove(item);
-            _dbContext.SaveChanges();
-
-            return Ok();
+            return Ok(id);
         }
 
         [HttpGet]
-        public ActionResult GetAll(string category)
+        public async Task<ActionResult<List<Item>>> GetAll()
         {
             if (!HttpContext.GetLoginInfo().isLogiran)
                 return BadRequest("You are not logged in!");
 
-            var data = _dbContext.Item
-                .Where(x => category == null || x.Category.StartsWith(category))
-                .OrderByDescending(i => i.Id)
-                .AsQueryable();
-
-
-            return Ok( data.Take(100).ToList());
-        }
-
-
-        [HttpGet]
-        public ActionResult GetAll2()
-        {
-            if (!HttpContext.GetLoginInfo().isLogiran)
-                return BadRequest("You are not logged in!");
-
-            var data = _dbContext.Item.ToList().AsQueryable();
-            return Ok(data.Take(100).ToList());
+            return await _itemService.GetAllItems();
         }
 
 

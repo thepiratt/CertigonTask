@@ -13,6 +13,7 @@ using CertigonTask_API_V3.Entities;
 using CertigonTask_API_V3.Data;
 using CertigonTask_API_V3.Models.Accounts;
 using CertigonTask_API_V3.Helpers;
+using CertigonTask_API_V3.Services.AuthenticationService;
 
 namespace CertigonTask_API_V3.Controllers
 {
@@ -21,124 +22,43 @@ namespace CertigonTask_API_V3.Controllers
     [Route("[controller]/[action]")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IAuthenticationService _authenticationService;
 
-        public AuthenticationController(ApplicationDbContext dbContext)
+        public AuthenticationController(IAuthenticationService authenticationService)
         {
-            this._dbContext = dbContext;
+            this._authenticationService = authenticationService;
         }
 
         [HttpPost]
-        public ActionResult Register([FromBody] AccountRegisterVM model)
+        public async Task<ActionResult> Register([FromBody] AccountRegisterVM request)
         {
-            if (_dbContext.UserAccount.Any(u => u.UserName == model.Username && u.Email == model.Email))
+            var result = await _authenticationService.Register(request);
+            if (result is null)
                 return BadRequest("User already registered");
 
-            UserAccount user = new()
-            {
-                UserName = model.Username,
-                PasswordHash = model.Password.HashPassword(),
-                Email = model.Email
-            };
-
-            _dbContext.Add(user);
-            _dbContext.SaveChanges();
             return Ok();
         }
 
-        [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        [HttpPost]
+        public async Task<ActionResult<LoginInformation>> Login([FromBody] AccountLoginVM loginVM)
         {
-            if (!HttpContext.GetLoginInfo().isLogiran)
-                return Forbid();
+            var result = await _authenticationService.Login(loginVM, Request);
+            if (result is null)
+                return NotFound("User is not found");
 
-            return Ok(_dbContext.UserAccount.FirstOrDefault(i => i.Id == id)); ;
-        }
-
-        [HttpPost("{id}")]
-        public ActionResult Update(int id, [FromBody] AccountUpdateVM x)
-        {
-            if (!HttpContext.GetLoginInfo().isLogiran)
-                return BadRequest("You are not logged in!");
-
-            UserAccount user;
-
-            if (id == 0)
-            {
-                user = new UserAccount
-                {
-                    Created_time = DateTime.Now
-                };
-                _dbContext.Add(user);
-            }
-            else
-            {
-                user = _dbContext.UserAccount.FirstOrDefault(k => k.Id == id);
-                if (user == null)
-                    return BadRequest("No user with that ID!");
-            }
-
-            user.UserName = x.Username.RemoveTags();
-            user.PasswordHash = x.Password.RemoveTags().HashPassword();
-            user.Email = x.Email.RemoveTags();
-            user.isAdmin = x.isAdmin;
-            user.isManager = x.isManager;
-
-            _dbContext.SaveChanges();
-            return Get(user.Id);
+            return new LoginInformation(result);
         }
 
         [HttpPost]
-        public ActionResult<LoginInformation> Login([FromBody] AccountLoginVM x)
-        {
-            //1- provjera logina
-            UserAccount loggedUser = _dbContext.UserAccount
-                .FirstOrDefault(k => k.UserName != null && k.UserName == x.UserName && k.PasswordHash == x.Password.HashPassword());
-
-            if (loggedUser == null)
-            {
-                //pogresan username i password
-                return new LoginInformation(null);
-            }
-
-            //2- generisati random string
-            string randomString = TokenGenerator.Generate(10);
-
-            //3- dodati novi zapis u tabelu AutentifikacijaToken za logiraniKorisnikId i randomString
-            var noviToken = new AuthenticationToken()
-            {
-                IpAdress = Request.HttpContext.Connection.RemoteIpAddress?.ToString(),
-                Value = randomString,
-                UserAccount = loggedUser,
-                Created_Time = DateTime.Now
-            };
-
-            _dbContext.Add(noviToken);
-            _dbContext.SaveChanges();
-
-            //4- vratiti token string
-            return new LoginInformation(noviToken);
-        }
-
-        [HttpPost]
-        public ActionResult Logout()
+        public async Task<ActionResult> Logout()
         {
             AuthenticationToken authenticationToken = HttpContext.GetAuthToken();
 
             if (authenticationToken == null)
                 return Ok();
 
-            _dbContext.Remove(authenticationToken);
-            _dbContext.SaveChanges();
+            var result = await _authenticationService.Logout(authenticationToken);
             return Ok();
-        }
-
-        [HttpGet]
-        public ActionResult<AuthenticationToken> Get()
-        {
-            AuthenticationToken authenticationToken = HttpContext.GetAuthToken();
-
-            return authenticationToken;
         }
     }
 }

@@ -1,4 +1,7 @@
 using CertigonTask_API_V3.Data;
+using CertigonTask_API_V3.Services.AuthenticationService;
+using CertigonTask_API_V3.Services.ItemService;
+using CertigonTask_API_V3.Services.UserAccountService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +14,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IUserAccountService, UserAccountService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 builder.Services.AddCors(p => p.AddPolicy("corsPolicy", build =>
 {

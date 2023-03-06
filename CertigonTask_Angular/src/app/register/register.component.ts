@@ -37,6 +37,10 @@ export class RegisterComponent implements OnInit {
     this.httpClient.post('http://localhost:5000/Authentication/Register', val)
       .subscribe((res: any) => {
             this.router.navigate(['/login']);
-      });
+      },
+        (error => {
+          porukaError(""+error.error);
+        })
+      );
   }
 }
